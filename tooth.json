@@ -1,0 +1,13 @@
+{
+  "coordinates": {
+    "org": "com.yieldbot.devops",
+    "name": "khalamari",
+    "type": "deployable"
+  },
+  "build": [
+    ""
+  ],
+  "version": [
+    ""
+  ]
+}

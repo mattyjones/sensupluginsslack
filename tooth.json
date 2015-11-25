@@ -1,13 +1,13 @@
 {
   "coordinates": {
     "org": "com.yieldbot.devops",
-    "name": "khalamari",
+    "name": "sensu-yieldbot-handler-slack",
     "type": "deployable"
   },
   "build": [
     ""
   ],
   "version": [
-    ""
+    "cat version.txt"
   ]
 }

@@ -51,7 +51,8 @@ func main() {
 	flag.Parse()
 
 	slackToken := *slackTokenPtr
-	channel := *channelPtr
+	channelName := *channelPtr
+  channelID := "000000"
 	// rd_stdin := *stdinPtr
 
 	sensuEvent := new(dracky.SensuEvent)
@@ -65,6 +66,28 @@ func main() {
 		fmt.Print("Please enter a slack integration token")
 		os.Exit(1)
 	}
+
+  for k, v := range dracky.SlackChannels {
+    if channelName == k {
+      channelID = v
+    }
+  }
+
+  if channelID == "000000" {
+    fmt.Printf("%v is not mapped, please see the infra team")
+    os.exit(127)
+  }
+
+  api_ := slack.New(slackToken)
+    // If you set debugging, it will log all requests to the console
+    // Useful when encountering issues
+    // api.SetDebug(true)
+    groups, err := api_.GetChannelInfo(channelID)
+    if err != nil {
+        fmt.Printf("%s\n", err)
+        return
+    }
+        fmt.Printf("%v", groups)
 
 	api := slack.New(slackToken)
 	params := slack.PostMessageParameters{}

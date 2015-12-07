@@ -29,6 +29,6 @@ EOF
           install_dir=$(echo $i | sed 's#/src##')
         fi
 
-        git clone $install_pkg $GOPATH/src/$install_dir
+        git clone $install_pkg $GOPATH/src/$install_dir --depth 1
       fi
 done

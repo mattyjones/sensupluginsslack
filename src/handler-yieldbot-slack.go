@@ -37,23 +37,16 @@ func cleanOutput(output string) string {
 	return strings.Split(output, ":")[0]
 }
 
-func acquireChannelID(channel string) string {
-	fmt.Printf("%v", channel)
-	return channel
-}
-
 func main() {
 
 	slackTokenPtr := flag.String("token", "", "the slack integration token")
 	channelPtr := flag.String("channel", "monitoring-test", "the channel to post notifications to")
-	// stdinPtr := flag.Bool("read-stdin", true, "read input from stdin")
 
 	flag.Parse()
 
 	slackToken := *slackTokenPtr
 	channelName := *channelPtr
-  channelID := "000000"
-	// rd_stdin := *stdinPtr
+	channelID := "000000"
 
 	sensuEvent := new(dracky.SensuEvent)
 	sensuEvent = sensuEvent.AcquireSensuEvent()
@@ -67,27 +60,27 @@ func main() {
 		os.Exit(1)
 	}
 
-  for k, v := range dracky.SlackChannels {
-    if channelName == k {
-      channelID = v
-    }
-  }
+	for k, v := range dracky.SlackChannels {
+		if channelName == k {
+			channelID = v
+		}
+	}
 
-  if channelID == "000000" {
-    fmt.Printf("%v is not mapped, please see the infra team")
-    os.exit(127)
-  }
+	if channelID == "000000" {
+		fmt.Printf("%v is not mapped, please see the infra team")
+		os.exit(127)
+	}
 
-  api_ := slack.New(slackToken)
-    // If you set debugging, it will log all requests to the console
-    // Useful when encountering issues
-    // api.SetDebug(true)
-    groups, err := api_.GetChannelInfo(channelID)
-    if err != nil {
-        fmt.Printf("%s\n", err)
-        return
-    }
-        fmt.Printf("%v", groups)
+	// api := slack.New(slackToken)
+	// // If you set debugging, it will log all requests to the console
+	// // Useful when encountering issues
+	// // api.SetDebug(true)
+	// groups, err := api.GetChannelInfo(channelID)
+	// if err != nil {
+	// 	fmt.Printf("%s\n", err)
+	// 	return
+	// }
+	// fmt.Printf("%v", groups)
 
 	api := slack.New(slackToken)
 	params := slack.PostMessageParameters{}
@@ -133,7 +126,7 @@ func main() {
 		},
 	}
 	params.Attachments = []slack.Attachment{attachment}
-	channelID, timestamp, err := api.PostMessage("C09JY7W0P", "", params)
+	channelID, timestamp, err := api.PostMessage(channelID, "", params)
 	if err != nil {
 		fmt.Printf("%s\n", err)
 		return

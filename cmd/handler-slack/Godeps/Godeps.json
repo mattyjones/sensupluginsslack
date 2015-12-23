@@ -1,0 +1,30 @@
+{
+	"ImportPath": "github.com/yieldbot/sensuslack/cmd/handler-slack",
+	"GoVersion": "go1.5",
+	"Deps": [
+		{
+			"ImportPath": "github.com/nlopes/slack",
+			"Comment": "v0.0.1-69-g9153359",
+			"Rev": "9153359e4c6e3dd6fecd68332164321b5efd543f"
+		},
+		{
+			"ImportPath": "github.com/yieldbot/sensuplugin/sensuhandler",
+			"Comment": "v1.0.0-62-g342a9b2",
+			"Rev": "342a9b28cc04d60c953e16b997c79e9030ffe616"
+		},
+		{
+			"ImportPath": "github.com/yieldbot/sensuplugin/sensuutil",
+			"Comment": "v1.0.0-62-g342a9b2",
+			"Rev": "342a9b28cc04d60c953e16b997c79e9030ffe616"
+		},
+		{
+			"ImportPath": "github.com/yieldbot/sensuslack/lib",
+			"Comment": "0.0.1-1-g26d1858",
+			"Rev": "26d1858a3b68a73a9540ce371e84f4926f1ef2ac"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "6c89489cafabcbc76df9dbf84ebf07204673fecf"
+		}
+	]
+}

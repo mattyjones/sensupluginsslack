@@ -1,0 +1,16 @@
+{
+  "coordinates": {
+    "org": "sensuslack",
+    "name": "handler-slack",
+    "type": "golang"
+  },
+  "build": [
+    "make -f ../../Makefile srcdir=../ pkg=handler-slack all"
+  ],
+  "version": [
+    "make -f ../../Makefile version"
+  ],
+  "clean": [
+    "make -f ../../Makefile srcdir=../.. clean"
+  ]
+}

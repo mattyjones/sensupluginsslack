@@ -212,7 +212,7 @@ pre-build:
 	echo "Creating $$GOPATH/src/github.com/yieldbot/sensuslack"; \
 	mkdir -p $$GOPATH/src/github.com/yieldbot/sensuslack; \
 	echo "Copying dependencies from $$(pwd) -> $$GOPATH/src/github.com/yieldbot/sensuslack"; \
-	#cp -R ../../* $$GOPATH/src/github.com/yieldbot/sensuslack; \
+	cp -R ../../* $$GOPATH/src/github.com/yieldbot/sensuslack; \
 
 pre-dist:
 	@if [ -e ../../cmd/$(pkg) ]; then \

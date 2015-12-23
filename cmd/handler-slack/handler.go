@@ -14,7 +14,6 @@ import (
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
 	"github.com/yieldbot/sensuslack/lib"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -50,14 +49,14 @@ func main() {
 	channelName := *channelPtr
 	channelID := "000000"
 
-	sensuEvent := new(handler.SensuEvent)
+	sensuEvent := new(sensuhandler.SensuEvent)
 	sensuEvent = sensuEvent.AcquireSensuEvent()
 
 	// YELLOW
 	// this is ugly, needs to be a better way to do this
 	if slackToken == "" {
 		fmt.Print("Please enter a slack integration token")
-		os.Exit(1)
+		sensuutil.Exit("CONFIGERROR")
 	}
 
 	for k, v := range lib.SlackChannels {
@@ -68,7 +67,7 @@ func main() {
 
 	if channelID == "000000" {
 		fmt.Printf("%v is not mapped, please see the infra team")
-		os.Exit(127)
+		sensuutil.Exit("CONFIGERROR")
 	}
 
 	// api := slack.New(slackToken)
@@ -100,12 +99,12 @@ func main() {
 			},
 			slack.AttachmentField{
 				Title: "Check Name",
-				Value: handler.CreateCheckName(sensuEvent.Check.Name),
+				Value: sensuhandler.CreateCheckName(sensuEvent.Check.Name),
 				Short: true,
 			},
 			slack.AttachmentField{
 				Title: "Check State",
-				Value: handler.DefineStatus(sensuEvent.Check.Status),
+				Value: sensuhandler.DefineStatus(sensuEvent.Check.Status),
 				Short: true,
 			},
 			slack.AttachmentField{
@@ -115,7 +114,7 @@ func main() {
 			},
 			slack.AttachmentField{
 				Title: "Check State Duration",
-				Value: strconv.Itoa(handler.DefineCheckStateDuration()),
+				Value: strconv.Itoa(sensuhandler.DefineCheckStateDuration()),
 				Short: true,
 			},
 			slack.AttachmentField{
@@ -128,7 +127,7 @@ func main() {
 	params.Attachments = []slack.Attachment{attachment}
 	channelID, timestamp, err := api.PostMessage(channelID, "", params)
 	if err != nil {
-		util.EHndlr(err)
+		sensuutil.EHndlr(err)
 	}
 	fmt.Printf("Message successfully sent to channel %s at %s", channelID, timestamp)
 }

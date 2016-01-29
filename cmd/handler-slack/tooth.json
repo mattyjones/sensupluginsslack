@@ -1,6 +1,6 @@
 {
   "coordinates": {
-    "org": "sensuslack",
+    "org": "handler-slack",
     "name": "handler-slack",
     "type": "golang"
   },

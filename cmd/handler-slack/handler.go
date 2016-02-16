@@ -13,7 +13,7 @@ import (
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
-	"github.com/yieldbot/sensuslack/lib"
+	//"github.com/yieldbot/sensuslack/lib"
 	"strconv"
 	"strings"
 	"time"
@@ -47,7 +47,7 @@ func main() {
 
 	slackToken := *slackTokenPtr
 	channelName := *channelPtr
-	channelID := "000000"
+	channelID := "C09JY7W0P"
 
 	sensuEvent := new(sensuhandler.SensuEvent)
 	sensuEvent = sensuEvent.AcquireSensuEvent()
@@ -59,11 +59,13 @@ func main() {
 		sensuutil.Exit("CONFIGERROR")
 	}
 
-	for k, v := range lib.SlackChannels {
-		if channelName == k {
-			channelID = v
-		}
-	}
+	fmt.Printf(channelName)
+
+	// for k, v := range lib.SlackChannels {
+	// 	if channelName == k {
+	// 		channelID = v
+	// 	}
+	// }
 
 	if channelID == "000000" {
 		fmt.Printf("%v is not mapped, please see the infra team")

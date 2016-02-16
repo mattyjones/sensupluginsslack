@@ -67,10 +67,10 @@ func main() {
 	// 	}
 	// }
 
-	if channelID == "000000" {
-		fmt.Printf("%v is not mapped, please see the infra team")
-		sensuutil.Exit("CONFIGERROR")
-	}
+	// if channelID == "000000" {
+	// 	fmt.Printf("%v is not mapped, please see the infra team")
+	// 	sensuutil.Exit("CONFIGERROR")
+	// }
 
 	// api := slack.New(slackToken)
 	// // If you set debugging, it will log all requests to the console

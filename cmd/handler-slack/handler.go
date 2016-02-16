@@ -13,7 +13,6 @@ import (
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
-	//"github.com/yieldbot/sensuslack/lib"
 	"strconv"
 	"strings"
 	"time"
@@ -52,36 +51,12 @@ func main() {
 	sensuEvent := new(sensuhandler.SensuEvent)
 	sensuEvent = sensuEvent.AcquireSensuEvent()
 
-	// YELLOW
-	// this is ugly, needs to be a better way to do this
 	if slackToken == "" {
 		fmt.Print("Please enter a slack integration token")
 		sensuutil.Exit("CONFIGERROR")
 	}
 
 	fmt.Printf(channelName)
-
-	// for k, v := range lib.SlackChannels {
-	// 	if channelName == k {
-	// 		channelID = v
-	// 	}
-	// }
-
-	// if channelID == "000000" {
-	// 	fmt.Printf("%v is not mapped, please see the infra team")
-	// 	sensuutil.Exit("CONFIGERROR")
-	// }
-
-	// api := slack.New(slackToken)
-	// // If you set debugging, it will log all requests to the console
-	// // Useful when encountering issues
-	// // api.SetDebug(true)
-	// groups, err := api.GetChannelInfo(channelID)
-	// if err != nil {
-	// 	fmt.Printf("%s\n", err)
-	// 	return
-	// }
-	// fmt.Printf("%v", groups)
 
 	api := slack.New(slackToken)
 	params := slack.PostMessageParameters{}

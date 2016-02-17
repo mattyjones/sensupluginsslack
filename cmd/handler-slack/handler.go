@@ -40,12 +40,12 @@ func cleanOutput(output string) string {
 func main() {
 
 	slackTokenPtr := flag.String("token", "", "the slack integration token")
-	channelPtr := flag.String("channel", "monitoring-test", "the channel to post notifications to")
+	// channelPtr := flag.String("channel", "monitoring-test", "the channel to post notifications to")
 
 	flag.Parse()
 
 	slackToken := *slackTokenPtr
-	channelName := *channelPtr
+	// channelName := *channelPtr
 	channelID := "C09JY7W0P"
 
 	sensuEvent := new(sensuhandler.SensuEvent)
@@ -56,7 +56,8 @@ func main() {
 		sensuutil.Exit("CONFIGERROR")
 	}
 
-	fmt.Printf(channelName)
+	fmt.Printf(slackToken)
+	// fmt.Printf(channelName)
 
 	api := slack.New(slackToken)
 	params := slack.PostMessageParameters{}

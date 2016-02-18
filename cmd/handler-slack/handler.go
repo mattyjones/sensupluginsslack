@@ -27,6 +27,7 @@ func main() {
 
 	var slackToken string
 	var channelID string
+	var debug bool
 
 	app := cli.NewApp()
 	app.Name = "handler-slack"
@@ -41,7 +42,10 @@ func main() {
 			sensuutil.Exit("CONFIGERROR")
 		}
 
-		fmt.Printf(slackToken)
+		if debug {
+			fmt.Printf("For the value of the flags please see the handler configuration file")
+			sensuutil.Exit("ok")
+		}
 
 		api := slack.New(slackToken)
 		params := slack.PostMessageParameters{}
@@ -97,7 +101,7 @@ func main() {
 		cli.StringFlag{
 			Name:        "token, t",
 			Value:       "",
-			Usage:       "he slack integration toke",
+			Usage:       "the slack integration token",
 			EnvVar:      "SLACK_TOKEN",
 			Destination: &slackToken,
 		},
@@ -108,6 +112,12 @@ func main() {
 			Usage:       "The channel ID that you wish to send this to",
 			EnvVar:      "SLACK_CHANNEL_ID",
 			Destination: &channelID,
+		},
+
+		cli.BoolFlag{
+			Name:        "debug, d",
+			Usage:       "Set this to print debugging information. No notifications will be sent",
+			Destination: &debug,
 		},
 	}
 	app.Run(os.Args)

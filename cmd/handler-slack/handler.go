@@ -15,13 +15,8 @@ import (
 	"github.com/yieldbot/sensuplugin/sensuutil"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 )
-
-func cleanOutput(output string) string {
-	return strings.Split(output, ":")[0]
-}
 
 func main() {
 
@@ -47,8 +42,10 @@ func main() {
 			sensuutil.Exit("ok")
 		}
 
+		// This is done with an api token not an incoming webhook to a specific channel
 		api := slack.New(slackToken)
 		params := slack.PostMessageParameters{}
+		// Build an attachment message for sending to the specified slack channel
 		attachment := slack.Attachment{
 			Color: sensuhandler.SetColor(sensuEvent.Check.Status),
 
@@ -85,7 +82,7 @@ func main() {
 				},
 				slack.AttachmentField{
 					Title: "Check Output",
-					Value: cleanOutput(sensuEvent.Check.Output),
+					Value: sensuhandler.CleanOutput(sensuEvent.Check.Output),
 					Short: true,
 				},
 			},

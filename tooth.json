@@ -20,5 +20,5 @@
   "clean": [
     "make clean"
   ],
-  "commit": []
+  "commit": ["version"]
 }

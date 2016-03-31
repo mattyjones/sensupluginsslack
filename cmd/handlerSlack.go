@@ -22,11 +22,12 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
-	"strconv"
-	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -44,6 +45,8 @@ var handlerSlackCmd = &cobra.Command{
 
 		sensuEvent := new(sensuhandler.SensuEvent)
 		sensuEvent = sensuEvent.AcquireSensuEvent()
+
+		sensuEnv := sensuhandler.SetSensuEnv()
 
 		if slackToken == "" {
 			fmt.Print("Please enter a slack integration token")
@@ -91,6 +94,16 @@ var handlerSlackCmd = &cobra.Command{
 				slack.AttachmentField{
 					Title: "Check Output",
 					Value: sensuhandler.CleanOutput(sensuEvent.Check.Output),
+					Short: true,
+				},
+				slack.AttachmentField{
+					Title: "Sensu Environment",
+					Value: sensuhandler.DefineSensuEnv(sensuEnv.Sensu.Environment),
+					Short: true,
+				},
+				slack.AttachmentField{
+					Title: "Sensu Cluster",
+					Value: "",
 					Short: true,
 				},
 			},

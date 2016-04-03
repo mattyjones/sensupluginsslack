@@ -32,9 +32,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var slackToken string
-var channelID string
-
 // handlerSlackCmd represents the handlerSlack command
 var handlerSlackCmd = &cobra.Command{
 	Use:   "handlerSlack --token <token> --channel <slack channel>",
@@ -47,6 +44,8 @@ var handlerSlackCmd = &cobra.Command{
 		sensuEvent = sensuEvent.AcquireSensuEvent()
 
 		sensuEnv := sensuhandler.SetSensuEnv()
+
+		uURL := sensuhandler.AcquireUchiwa("hostname", sensuEnv)
 
 		if slackToken == "" {
 			fmt.Print("Please enter a slack integration token")
@@ -102,7 +101,12 @@ var handlerSlackCmd = &cobra.Command{
 					Short: true,
 				},
 				slack.AttachmentField{
-					Title: "Sensu Cluster",
+					Title: "Uchiwa",
+					Value: uURL,
+					Short: true,
+				},
+				slack.AttachmentField{
+					Title: "Runbook",
 					Value: "",
 					Short: true,
 				},
@@ -121,7 +125,4 @@ var handlerSlackCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(handlerSlackCmd)
 
-	// set commandline flags
-	handlerSlackCmd.Flags().StringVarP(&slackToken, "token", "", "", "the slack api token")
-	handlerSlackCmd.Flags().StringVarP(&channelID, "channel", "", "", "the Slack channel ID")
 }

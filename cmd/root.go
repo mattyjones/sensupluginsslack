@@ -29,8 +29,6 @@ import (
 )
 
 var cfgFile string
-var slackToken string
-var channelID string
 
 // This represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -67,8 +65,6 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	RootCmd.Flags().StringVarP(&slackToken, "token", "", "", "the slack api token")
-	RootCmd.Flags().StringVarP(&channelID, "channel", "", "", "the Slack channel ID")
 
 }
 

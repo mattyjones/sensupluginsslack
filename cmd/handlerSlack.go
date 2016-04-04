@@ -32,6 +32,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var slackToken string
+var channelID string
+
 // handlerSlackCmd represents the handlerSlack command
 var handlerSlackCmd = &cobra.Command{
 	Use:   "handlerSlack --token <token> --channel <slack channel>",
@@ -124,5 +127,7 @@ var handlerSlackCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(handlerSlackCmd)
+	handlerSlackCmd.Flags().StringVarP(&slackToken, "token", "", "", "the slack api token")
+	handlerSlackCmd.Flags().StringVarP(&channelID, "channel", "", "", "the Slack channel ID")
 
 }

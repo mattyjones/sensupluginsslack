@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+- update Makefile to incorporate OSX specific changes and general refactoring
+- update tooth file to match new build params
+- add version pkg
 
 ## 0.1.10 - 2016-04-04
 ### Changed

@@ -9,7 +9,7 @@
     "type": "golang"
   },
   "build": [
-    "make pkg=sensupluginsslack pre-build && make pkg=sensupluginsslack all"
+    "make tools && make pre-build && make all"
   ],
   "bump": [
     "make version_bump"
@@ -21,6 +21,6 @@
     "make clean"
   ],
   "commit": [
-    "version"
+    "./version/version.go"
   ]
 }

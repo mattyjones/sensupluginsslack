@@ -251,9 +251,10 @@ vendor:
 
 # print out the current version of the project
 version:
+	@export PATH=$$PATH:$$GOROOT/bin:$$GOBIN; \
 	@if [ -e $(version_file) ]; then \
 		sed -i $(version_file).bak 's/package version/package main/' $(version_file); \
-		ver=$$(go run $(version_file)); \
+		ver=`go run $(version_file)`; \
 		sed -i $(version_file).bak 's/package main/package version/' $(version_file); \
 		rm "$(version_file).bak"; \
 		echo "{\"version\":\"$$ver\"}"; \

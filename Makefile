@@ -251,7 +251,7 @@ vendor:
 
 # print out the current version of the project
 version:
-	@if [ -e $(version_file) ]; then \
+	if [ -e $(version_file) ]; then \
 		sed -i $(version_file).bak 's/package version/package main/' $(version_file); \
 		ver=`go run $(version_file)`; \
 		sed -i $(version_file).bak 's/package main/package version/' $(version_file); \
@@ -265,7 +265,7 @@ version:
 # Double $$ to prevent make from interpreting them.
 # Single/Double quote magic to allow $(version_file_delimiter) to be expanded
 version_bump:
-	@if [ -e $(version_file) ]; then \
+	if [ -e $(version_file) ]; then \
 		perl -i -pe 's/\d+/$$&+($$&>0)/e if /'"$(version_file_delimiter)"'/' $(version_file); \
 	else \
 		echo "No version file found"; \

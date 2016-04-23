@@ -242,9 +242,10 @@ test:
 test_all: vet lint format test
 
 tools:
-	go get -v github.com/spf13/cobra/cobra
-	go get -u github.com/golang/lint/golint
-	go get -u github.com/kardianos/govendor
+	@export PATH=$$PATH:$$GOROOT/bin:$$GOBIN; \
+	go get -v github.com/spf13/cobra/cobra; \
+	go get -u github.com/golang/lint/golint; \
+	go get -u github.com/kardianos/govendor; \
 
 vendor:
 	@govendor sync

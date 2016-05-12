@@ -22,8 +22,11 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"time"
+
+	"github.com/op/go-logging"
 
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
@@ -35,6 +38,9 @@ import (
 var slackToken string
 var channelID string
 
+var syslogLog = logging.MustGetLogger("slackHandler")
+var stderrLog = logging.MustGetLogger("slackHandler")
+
 // handlerSlackCmd represents the handlerSlack command
 var handlerSlackCmd = &cobra.Command{
 	Use:   "handlerSlack --token <token> --channel <slack channel>",
@@ -43,17 +49,21 @@ var handlerSlackCmd = &cobra.Command{
 	 as a Slack attachment to a given channel`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		syslogBackend, _ := logging.NewSyslogBackend("handlerSlack")
+		stderrBackend := logging.NewLogBackend(os.Stderr, "handlerSlack", 0)
+		syslogBackendFormatter := logging.NewBackendFormatter(syslogBackend, sensuutil.SyslogFormat)
+		stderrBackendFormatter := logging.NewBackendFormatter(stderrBackend, sensuutil.StderrFormat)
+		logging.SetBackend(syslogBackendFormatter, stderrBackendFormatter)
+
+		if slackToken == "" {
+			syslogLog.Error("Please enter a slack integration token")
+			sensuutil.Exit("CONFIGERROR")
+		}
+
 		sensuEvent := new(sensuhandler.SensuEvent)
 		sensuEvent = sensuEvent.AcquireSensuEvent()
 
 		sensuEnv := sensuhandler.SetSensuEnv()
-
-		uURL := sensuhandler.AcquireUchiwa("hostname", sensuEnv)
-
-		if slackToken == "" {
-			fmt.Print("Please enter a slack integration token")
-			sensuutil.Exit("CONFIGERROR")
-		}
 
 		// This is done with an api token not an incoming webhook to a specific channel
 		api := slack.New(slackToken)
@@ -105,7 +115,7 @@ var handlerSlackCmd = &cobra.Command{
 				},
 				slack.AttachmentField{
 					Title: "Uchiwa",
-					Value: uURL,
+					Value: sensuhandler.AcquireUchiwa("hostname", sensuEnv),
 					Short: true,
 				},
 				slack.AttachmentField{
@@ -118,7 +128,7 @@ var handlerSlackCmd = &cobra.Command{
 		params.Attachments = []slack.Attachment{attachment}
 		channelID, timestamp, err := api.PostMessage(channelID, "", params)
 		if err != nil {
-			sensuutil.EHndlr(err)
+			syslogLog.Error(err)
 		}
 		fmt.Printf("Message successfully sent to channel %s at %s", channelID, timestamp)
 

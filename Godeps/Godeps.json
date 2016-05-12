@@ -1,74 +1,57 @@
 {
 	"ImportPath": "github.com/yieldbot/sensupluginsslack",
-	"GoVersion": "go1.6",
+	"GoVersion": "go1.5",
+	"GodepVersion": "v62",
 	"Deps": [
 		{
 			"ImportPath": "github.com/BurntSushi/toml",
-			"Comment": "v0.1.0-46-gbbd5bb6",
-			"Rev": "bbd5bb678321a0d6e58f1099321dfa73391c1b6f"
+			"Comment": "v0.2.0-9-gf0aeabc",
+			"Rev": "f0aeabca5a127c4078abb8c8d64298b147264b55"
 		},
 		{
-			"ImportPath": "github.com/hashicorp/consul/api",
-			"Comment": "v0.6.4-188-g140cde6",
-			"Rev": "140cde6f42c158f5082627a42f042c868fbc050e"
-		},
-		{
-			"ImportPath": "github.com/hashicorp/go-cleanhttp",
-			"Rev": "875fb671b3ddc66f8e2f0acc33829c8cb989a38d"
+			"ImportPath": "github.com/fsnotify/fsnotify",
+			"Comment": "v1.3.0",
+			"Rev": "30411dbcefb7a1da7e84f75530ad3abe4011b4f8"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/hcl/ast",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/hcl/parser",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/hcl/scanner",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/hcl/strconv",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/hcl/token",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/json/parser",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/json/scanner",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl/json/token",
-			"Rev": "2604f3bda7e8960c1be1063709e7d7f0765048d0"
-		},
-		{
-			"ImportPath": "github.com/hashicorp/serf/coordinate",
-			"Comment": "v0.7.0-47-g598c548",
-			"Rev": "598c54895cc5a7b1a24a398d635e8c0ea0959870"
+			"Rev": "9a905a34e6280ce905da1a32344b25e81011197a"
 		},
 		{
 			"ImportPath": "github.com/inconshreveable/mousetrap",
 			"Rev": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
-		},
-		{
-			"ImportPath": "github.com/kr/pretty",
-			"Comment": "go.weekly.2011-12-22-29-gadd1dbc",
-			"Rev": "add1dbc86daf0f983cd4a48ceb39deb95c729b67"
-		},
-		{
-			"ImportPath": "github.com/kr/text",
-			"Rev": "bb797dc4fb8320488f47bf11de07a733d7233e1f"
 		},
 		{
 			"ImportPath": "github.com/magiconair/properties",
@@ -81,8 +64,13 @@
 		},
 		{
 			"ImportPath": "github.com/nlopes/slack",
-			"Comment": "v0.0.1-94-gb226e70",
-			"Rev": "b226e70fe599e7548a1cc934fed12523011b01bd"
+			"Comment": "v0.0.1-104-ge337a73",
+			"Rev": "e337a7316d3fe9aa55b7063035d6d32f3dbcaeb9"
+		},
+		{
+			"ImportPath": "github.com/op/go-logging",
+			"Comment": "v1-7-g970db52",
+			"Rev": "970db520ece77730c7e4724c61121037378659d9"
 		},
 		{
 			"ImportPath": "github.com/spf13/cast",
@@ -90,7 +78,7 @@
 		},
 		{
 			"ImportPath": "github.com/spf13/cobra",
-			"Rev": "c678ff029ee250b65714e518f4f5c5cb934955de"
+			"Rev": "0f866a6211e33cde2091d9290c08f6afd6c9ebbc"
 		},
 		{
 			"ImportPath": "github.com/spf13/jwalterweatherman",
@@ -98,30 +86,29 @@
 		},
 		{
 			"ImportPath": "github.com/spf13/pflag",
-			"Rev": "7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7"
+			"Rev": "cb88ea77998c3f024757528e3305022ab50b43be"
 		},
 		{
 			"ImportPath": "github.com/spf13/viper",
-			"Rev": "c975dc1b4eacf4ec7fdbf0873638de5d090ba323"
+			"Rev": "d8a428b8a30606e1d0b355d91edf282609ade1a6"
 		},
 		{
 			"ImportPath": "github.com/yieldbot/sensuplugin/sensuhandler",
-			"Comment": "v1.0.0-161-g43216b4",
-			"Rev": "43216b490275c34ebecd88ed7fb1242d33f1314f"
+			"Comment": "v1.0.0-172-ga20cb45",
+			"Rev": "a20cb451e4a1d6fb9effdf8b93a872b0da48a6f9"
 		},
 		{
 			"ImportPath": "github.com/yieldbot/sensuplugin/sensuutil",
-			"Comment": "v1.0.0-161-g43216b4",
-			"Rev": "43216b490275c34ebecd88ed7fb1242d33f1314f"
+			"Comment": "v1.0.0-172-ga20cb45",
+			"Rev": "a20cb451e4a1d6fb9effdf8b93a872b0da48a6f9"
 		},
 		{
 			"ImportPath": "golang.org/x/net/websocket",
-			"Rev": "04b9de9b512f58addf28c9853d50ebef61c3953e"
+			"Rev": "96dbb961a39ddccf16860cdd355bfa639c497f23"
 		},
 		{
-			"ImportPath": "gopkg.in/fsnotify.v1",
-			"Comment": "v1.2.10",
-			"Rev": "875cf421b32f8f1b31bd43776297876d01542279"
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "806cb00533e5af545ce95e84b349404f8e5ff7a8"
 		},
 		{
 			"ImportPath": "gopkg.in/yaml.v2",

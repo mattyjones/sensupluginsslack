@@ -28,7 +28,6 @@ import (
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
-	"github.com/yieldbot/yieldbotgolanginfra/version"
 
 	"github.com/spf13/cobra"
 )
@@ -43,17 +42,6 @@ var handlerSlackCmd = &cobra.Command{
 	Long: `Read in the Sensu check result and condense the output and post it
 	 as a Slack attachment to a given channel`,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// Set version bits
-		version.AppVersionMajor = "0"
-		version.AppVersionMinor = "1"
-		version.AppVersionPatch = "11"
-		version.AppVersionPre = ""
-		version.AppVersionBuild = ""
-
-		if ver {
-			sensuutil.Exit("ok", version.AppVersion())
-		}
 
 		sensuEvent := new(sensuhandler.SensuEvent)
 		sensuEvent = sensuEvent.AcquireSensuEvent()

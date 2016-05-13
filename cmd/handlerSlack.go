@@ -21,7 +21,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -40,6 +39,9 @@ var channelID string
 
 var syslogLog = logging.MustGetLogger("slackHandler")
 var stderrLog = logging.MustGetLogger("slackHandler")
+var stdoutLog = logging.MustGetLogger("slackHandler")
+
+var sensuEnv = new(sensuhandler.EnvDetails)
 
 // handlerSlackCmd represents the handlerSlack command
 var handlerSlackCmd = &cobra.Command{
@@ -51,9 +53,13 @@ var handlerSlackCmd = &cobra.Command{
 
 		syslogBackend, _ := logging.NewSyslogBackend("handlerSlack")
 		stderrBackend := logging.NewLogBackend(os.Stderr, "handlerSlack", 0)
+		stdoutBackend := logging.NewLogBackend(os.Stdout, "handlerSlack", 0)
 		syslogBackendFormatter := logging.NewBackendFormatter(syslogBackend, sensuutil.SyslogFormat)
 		stderrBackendFormatter := logging.NewBackendFormatter(stderrBackend, sensuutil.StderrFormat)
-		logging.SetBackend(syslogBackendFormatter, stderrBackendFormatter)
+		stdoutBackendFormatter := logging.NewBackendFormatter(stdoutBackend, sensuutil.StderrFormat)
+
+		logging.SetBackend(syslogBackendFormatter, stderrBackendFormatter, stdoutBackendFormatter)
+		sensuEnv = sensuEnv.SetSensuEnv()
 
 		if slackToken == "" {
 			syslogLog.Error("Please enter a slack integration token")
@@ -62,8 +68,6 @@ var handlerSlackCmd = &cobra.Command{
 
 		sensuEvent := new(sensuhandler.SensuEvent)
 		sensuEvent = sensuEvent.AcquireSensuEvent()
-
-		sensuEnv := sensuhandler.SetSensuEnv()
 
 		// This is done with an api token not an incoming webhook to a specific channel
 		api := slack.New(slackToken)
@@ -115,7 +119,7 @@ var handlerSlackCmd = &cobra.Command{
 				},
 				slack.AttachmentField{
 					Title: "Uchiwa",
-					Value: sensuhandler.AcquireUchiwa("hostname", sensuEnv),
+					Value: sensuEnv.AcquireUchiwa(sensuEvent.AcquireMonitoredInstance()),
 					Short: true,
 				},
 				slack.AttachmentField{
@@ -130,7 +134,7 @@ var handlerSlackCmd = &cobra.Command{
 		if err != nil {
 			syslogLog.Error(err)
 		}
-		fmt.Printf("Message successfully sent to channel %s at %s", channelID, timestamp)
+		syslogLog.Info("Message successfully sent to channel %s at %s", channelID, timestamp)
 
 	},
 }

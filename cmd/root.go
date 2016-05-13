@@ -29,9 +29,9 @@ import (
 )
 
 var cfgFile string
-var ver bool
+var debug bool
 
-// This represents the base command when called without any subcommands
+// RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "sensupluginsslack",
 	Short: "A brief description of your application",
@@ -65,6 +65,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sensupluginsslack.yaml)")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
+	RootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "print debugging info")
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 }

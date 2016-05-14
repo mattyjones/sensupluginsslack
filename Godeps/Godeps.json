@@ -94,13 +94,13 @@
 		},
 		{
 			"ImportPath": "github.com/yieldbot/sensuplugin/sensuhandler",
-			"Comment": "v1.0.0-173-g50a1d1b",
-			"Rev": "50a1d1b2bcd64118faf894b3bc9fe9504b882e23"
+			"Comment": "v1.0.0-175-g7479f3f",
+			"Rev": "7479f3fa420b3b4a27d8eef273d16c1b4defd837"
 		},
 		{
 			"ImportPath": "github.com/yieldbot/sensuplugin/sensuutil",
-			"Comment": "v1.0.0-173-g50a1d1b",
-			"Rev": "50a1d1b2bcd64118faf894b3bc9fe9504b882e23"
+			"Comment": "v1.0.0-175-g7479f3f",
+			"Rev": "7479f3fa420b3b4a27d8eef273d16c1b4defd837"
 		},
 		{
 			"ImportPath": "golang.org/x/net/websocket",

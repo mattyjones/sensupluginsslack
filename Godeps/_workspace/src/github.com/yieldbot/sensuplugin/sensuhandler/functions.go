@@ -11,7 +11,6 @@ package sensuhandler
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -21,22 +20,14 @@ import (
 
 // AcquireUchiwa returns an uchiwa url for the node alerting
 // func (e SensuEvent) AcquireMonitoredInstance() string {
-func (e EnvDetails) AcquireUchiwa(h string) string {
+func (e EnvDetails) AcquireUchiwa(h string, c string) string {
 	var tags string
 	var dc string
 
 	tags = e.Sensu.Consul.Tags
 	dc = e.Sensu.Consul.Datacenter
-	fmt.Println(e.Sensu.Consul.Tags)
-	fmt.Println(e.Sensu.Consul.Datacenter)
 
-	fmt.Println(tags)
-	fmt.Println(e)
-	fmt.Println(dc)
-	fmt.Println(h)
-
-	url := "https://" + tags + ".uchiwa.service" + "." + dc + ".consul/#/client/" + dc + "/" + h
-
+	url := "https://" + tags + ".uchiwa.service" + "." + dc + ".consul/#/client/" + dc + "/" + h + "?check=" + c
 	return url
 }
 

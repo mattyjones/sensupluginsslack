@@ -108,6 +108,11 @@ var handlerSlackCmd = &cobra.Command{
 					Short: true,
 				},
 				slack.AttachmentField{
+					Title: "Current Threshold",
+					Value: "",
+					Short: true,
+				},
+				slack.AttachmentField{
 					Title: "Check Output",
 					Value: sensuhandler.CleanOutput(sensuEvent.Check.Output),
 					Short: true,
@@ -119,7 +124,7 @@ var handlerSlackCmd = &cobra.Command{
 				},
 				slack.AttachmentField{
 					Title: "Uchiwa",
-					Value: sensuEnv.AcquireUchiwa(sensuEvent.AcquireMonitoredInstance()),
+					Value: sensuEnv.AcquireUchiwa(sensuEvent.AcquireMonitoredInstance(), sensuEvent.Check.Name),
 					Short: true,
 				},
 				slack.AttachmentField{

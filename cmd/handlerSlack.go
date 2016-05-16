@@ -21,6 +21,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -68,6 +69,7 @@ var handlerSlackCmd = &cobra.Command{
 
 		sensuEvent := new(sensuhandler.SensuEvent)
 		sensuEvent = sensuEvent.AcquireSensuEvent()
+		fmt.Println(sensuEvent)
 
 		// This is done with an api token not an incoming webhook to a specific channel
 		api := slack.New(slackToken)
@@ -89,7 +91,7 @@ var handlerSlackCmd = &cobra.Command{
 				},
 				slack.AttachmentField{
 					Title: "Check Name",
-					Value: sensuhandler.CreateCheckName(sensuEvent.Check.Name),
+					Value: sensuEvent.Check.Name,
 					Short: true,
 				},
 				slack.AttachmentField{
@@ -98,7 +100,7 @@ var handlerSlackCmd = &cobra.Command{
 					Short: true,
 				},
 				slack.AttachmentField{
-					Title: "Event Time",
+					Title: "Event Time (UTC)",
 					Value: time.Unix(sensuEvent.Check.Issued, 0).Format(time.RFC3339),
 					Short: true,
 				},
@@ -109,17 +111,7 @@ var handlerSlackCmd = &cobra.Command{
 				},
 				slack.AttachmentField{
 					Title: "Current Threshold",
-					Value: "",
-					Short: true,
-				},
-				slack.AttachmentField{
-					Title: "Check Output",
-					Value: sensuhandler.CleanOutput(sensuEvent.Check.Output),
-					Short: true,
-				},
-				slack.AttachmentField{
-					Title: "Sensu Environment",
-					Value: sensuhandler.DefineSensuEnv(sensuEnv.Sensu.Environment),
+					Value: sensuEvent.AcquireThreshold(),
 					Short: true,
 				},
 				slack.AttachmentField{
@@ -128,8 +120,23 @@ var handlerSlackCmd = &cobra.Command{
 					Short: true,
 				},
 				slack.AttachmentField{
-					Title: "Runbook",
-					Value: "",
+					Title: "Playbook",
+					Value: sensuEvent.AcquirePlaybook(),
+					Short: true,
+				},
+				slack.AttachmentField{
+					Title: "Sensu Environment",
+					Value: sensuhandler.DefineSensuEnv(sensuEnv.Sensu.Environment),
+					Short: true,
+				},
+				slack.AttachmentField{
+					Title: "Check Event ID",
+					Value: sensuEvent.ID,
+					Short: true,
+				},
+				slack.AttachmentField{
+					Title: "Check Output",
+					Value: sensuhandler.CleanOutput(sensuEvent.Check.Output),
 					Short: true,
 				},
 			},

@@ -1,4 +1,4 @@
-package cmd
+package sensupluginsslack
 
 import (
 	"testing"

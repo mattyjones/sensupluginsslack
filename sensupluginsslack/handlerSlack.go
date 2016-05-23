@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package cmd
+package sensupluginsslack
 
 import (
 	"fmt"
@@ -50,7 +50,7 @@ var handlerSlackCmd = &cobra.Command{
 	Short: "Post Sensu check results to a slack channel",
 	Long: `Read in the Sensu check result and condense the output and post it
 	 as a Slack attachment to a given channel`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(sensupluginsslack *cobra.Command, args []string) {
 
 		syslogBackend, _ := logging.NewSyslogBackend("handlerSlack")
 		stderrBackend := logging.NewLogBackend(os.Stderr, "handlerSlack", 0)

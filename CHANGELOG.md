@@ -7,6 +7,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - update Makefile to incorporate OSX specific changes and general refactoring
 - update tooth file to match new build params
 - add version pkg
+- update for golang 1.6.2
+- change pkg names
 
 ## 0.1.10 - 2016-04-04
 ### Changed

@@ -22,28 +22,37 @@ package sensupluginsslack
 
 import (
 	"fmt"
+	"log/syslog"
 	"os"
 
+	"github.com/Sirupsen/logrus"
+	"github.com/Sirupsen/logrus/hooks/syslog"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/yieldbot/sensuplugin/sensuutil"
+	"github.com/yieldbot/sensupluginsslack/version"
 )
 
+// Slack api token
+var slackToken string
+
+// Configuration via Viper
 var cfgFile string
+
+// Hostname for logging
+var host string
+
+// Create a logging instance.
+var syslogLog = logrus.New()
+
+// print debug info
 var debug bool
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "sensupluginsslack",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: fmt.Sprintf("A slack handler for Sensu - (%s)", version.AppVersion()),
+	Long:  `Generate meaningful slack attachments from Senu events`,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -58,30 +67,55 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports Persistent Flags, which, if defined here,
-	// will be global for your application.
+	// Setup logging for the package. Doing it here is much eaiser than in each
+	// binary. If you want to overwrite it in a specific binary then feel free.
+	hook, err := logrus_syslog.NewSyslogHook("", "", syslog.LOG_INFO, "")
+	if err != nil {
+		panic(err)
+	}
+	syslogLog.Hooks.Add(hook)
+	syslogLog.Formatter = new(logrus.JSONFormatter)
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sensupluginsslack.yaml)")
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	// Set the hostname for use in logging within the package. Doing it here is
+	// cleaner than in each binary but if you want to use some other method just
+	// override the variable in the specific binary.
+	host, err = os.Hostname()
+	if err != nil {
+		syslogLog.WithFields(logrus.Fields{
+			"check":   "sensupluginsslack",
+			"client":  "unknown",
+			"version": version.AppVersion(),
+			"error":   err,
+		}).Error(`Could not determine the hostname of this machine as reported by the kernel.`)
+		sensuutil.Exit("GENERALGOLANGERROR")
+	}
+
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /etc/sensuplugins/conf.d/.sensupluginschrony.yaml)")
 	RootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "print debugging info")
+	RootCmd.PersistentFlags().StringVarP(&slackToken, "token", "", "", "the slack api token")
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 }
 
-// initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" { // enable ability to specify config file via flag
+	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
+	} else {
+		viper.SetConfigName("sensupluginsslack")
+		viper.AddConfigPath("/etc/sensuplugins/conf.d")
 	}
 
-	viper.SetConfigName(".sensupluginsslack") // name of config file (without extension)
-	viper.AddConfigPath("$HOME")              // adding home directory as first search path
-	viper.AutomaticEnv()                      // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	if slackToken == "" {
+		viper.AutomaticEnv()
+		if err := viper.ReadInConfig(); err == nil {
+		} else {
+			syslogLog.WithFields(logrus.Fields{
+				"check":   "sensupluginsslack",
+				"client":  host,
+				"version": version.AppVersion(),
+				"error":   err,
+				"cfgFile": cfgFile,
+			}).Error(`Could not read in the configuration file.`)
+		}
 	}
 }

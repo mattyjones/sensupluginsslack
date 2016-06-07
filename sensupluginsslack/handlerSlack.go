@@ -21,28 +21,20 @@
 package sensupluginsslack
 
 import (
-	"fmt"
-	"os"
 	"strconv"
 	"time"
 
-	"github.com/op/go-logging"
-
+	"github.com/Sirupsen/logrus"
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
+	"github.com/yieldbot/sensupluginsslack/version"
 
 	"github.com/spf13/cobra"
 )
 
-var slackToken string
+// slack channel to post messages to
 var channelID string
-
-var syslogLog = logging.MustGetLogger("slackHandler")
-var stderrLog = logging.MustGetLogger("slackHandler")
-var stdoutLog = logging.MustGetLogger("slackHandler")
-
-var sensuEnv = new(sensuhandler.EnvDetails)
 
 // handlerSlackCmd represents the handlerSlack command
 var handlerSlackCmd = &cobra.Command{
@@ -52,24 +44,22 @@ var handlerSlackCmd = &cobra.Command{
 	 as a Slack attachment to a given channel`,
 	Run: func(sensupluginsslack *cobra.Command, args []string) {
 
-		syslogBackend, _ := logging.NewSyslogBackend("handlerSlack")
-		stderrBackend := logging.NewLogBackend(os.Stderr, "handlerSlack", 0)
-		stdoutBackend := logging.NewLogBackend(os.Stdout, "handlerSlack", 0)
-		syslogBackendFormatter := logging.NewBackendFormatter(syslogBackend, sensuutil.SyslogFormat)
-		stderrBackendFormatter := logging.NewBackendFormatter(stderrBackend, sensuutil.StderrFormat)
-		stdoutBackendFormatter := logging.NewBackendFormatter(stdoutBackend, sensuutil.StderrFormat)
-
-		logging.SetBackend(syslogBackendFormatter, stderrBackendFormatter, stdoutBackendFormatter)
+		// Bring in the environmant details
+		sensuEnv := new(sensuhandler.EnvDetails)
 		sensuEnv = sensuEnv.SetSensuEnv()
 
 		if slackToken == "" {
-			syslogLog.Error("Please enter a slack integration token")
-			sensuutil.Exit("CONFIGERROR")
+			syslogLog.WithFields(logrus.Fields{
+				"check":      "sensupluginsslack",
+				"client":     host,
+				"version":    version.AppVersion(),
+				"slackToken": slackToken,
+			}).Error(`Please enter a valid slack token`)
+			sensuutil.Exit("RUNTIMEERROR")
 		}
-
+		// read in the event data from the sensu server
 		sensuEvent := new(sensuhandler.SensuEvent)
 		sensuEvent = sensuEvent.AcquireSensuEvent()
-		fmt.Println(sensuEvent)
 
 		// This is done with an api token not an incoming webhook to a specific channel
 		api := slack.New(slackToken)
@@ -142,18 +132,28 @@ var handlerSlackCmd = &cobra.Command{
 			},
 		}
 		params.Attachments = []slack.Attachment{attachment}
-		channelID, timestamp, err := api.PostMessage(channelID, "", params)
+		_, _, err := api.PostMessage(channelID, "", params)
 		if err != nil {
-			syslogLog.Error(err)
+			syslogLog.WithFields(logrus.Fields{
+				"check":   "sensupluginsslack",
+				"client":  host,
+				"version": version.AppVersion(),
+				"error":   err,
+			}).Error(`Slack attachment could not be sent`)
+			sensuutil.Exit("RUNTIMEERROR")
 		}
-		syslogLog.Info("Message successfully sent to channel %s at %s", channelID, timestamp)
+		syslogLog.WithFields(logrus.Fields{
+			"check":   "sensupluginsslack",
+			"client":  host,
+			"version": version.AppVersion(),
+		}).Error(`Slack attachment has been sent`)
+		sensuutil.Exit("OK")
 
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(handlerSlackCmd)
-	handlerSlackCmd.Flags().StringVarP(&slackToken, "token", "", "", "the slack api token")
 	handlerSlackCmd.Flags().StringVarP(&channelID, "channel", "", "", "the Slack channel ID")
 
 }

@@ -28,7 +28,7 @@ import (
 	"github.com/nlopes/slack"
 	"github.com/yieldbot/sensuplugin/sensuhandler"
 	"github.com/yieldbot/sensuplugin/sensuutil"
-	"github.com/yieldbot/sensupluginsslack/version"
+	//"github.com/yieldbot/sensupluginsslack/version"
 
 	"github.com/spf13/cobra"
 )
@@ -52,7 +52,7 @@ var handlerSlackCmd = &cobra.Command{
 			syslogLog.WithFields(logrus.Fields{
 				"check":      "sensupluginsslack",
 				"client":     host,
-				"version":    version.AppVersion(),
+				//"version":    version.AppVersion(),
 				"slackToken": slackToken,
 			}).Error(`Please enter a valid slack token`)
 			sensuutil.Exit("RUNTIMEERROR")
@@ -137,7 +137,7 @@ var handlerSlackCmd = &cobra.Command{
 			syslogLog.WithFields(logrus.Fields{
 				"check":   "sensupluginsslack",
 				"client":  host,
-				"version": version.AppVersion(),
+				//"version": version.AppVersion(),
 				"error":   err,
 			}).Error(`Slack attachment could not be sent`)
 			sensuutil.Exit("RUNTIMEERROR")
@@ -145,7 +145,7 @@ var handlerSlackCmd = &cobra.Command{
 		syslogLog.WithFields(logrus.Fields{
 			"check":   "sensupluginsslack",
 			"client":  host,
-			"version": version.AppVersion(),
+			//"version": version.AppVersion(),
 		}).Error(`Slack attachment has been sent`)
 		sensuutil.Exit("OK")
 

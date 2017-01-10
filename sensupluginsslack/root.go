@@ -30,7 +30,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/yieldbot/sensuplugin/sensuutil"
-	"github.com/yieldbot/sensupluginsslack/version"
+	//"github.com/yieldbot/sensupluginsslack/version"
 )
 
 // Slack api token
@@ -51,7 +51,7 @@ var debug bool
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "sensupluginsslack",
-	Short: fmt.Sprintf("A slack handler for Sensu - (%s)", version.AppVersion()),
+	//Short: fmt.Sprintf("A slack handler for Sensu - (%s)", version.AppVersion()),
 	Long:  `Generate meaningful slack attachments from Senu events`,
 }
 
@@ -84,7 +84,7 @@ func init() {
 		syslogLog.WithFields(logrus.Fields{
 			"check":   "sensupluginsslack",
 			"client":  "unknown",
-			"version": version.AppVersion(),
+			//"version": version.AppVersion(),
 			"error":   err,
 		}).Error(`Could not determine the hostname of this machine as reported by the kernel.`)
 		sensuutil.Exit("GENERALGOLANGERROR")
@@ -112,7 +112,7 @@ func initConfig() {
 			syslogLog.WithFields(logrus.Fields{
 				"check":   "sensupluginsslack",
 				"client":  host,
-				"version": version.AppVersion(),
+				//"version": version.AppVersion(),
 				"error":   err,
 				"cfgFile": cfgFile,
 			}).Error(`Could not read in the configuration file.`)

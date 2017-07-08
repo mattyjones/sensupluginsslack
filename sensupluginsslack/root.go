@@ -52,7 +52,7 @@ var debug bool
 var RootCmd = &cobra.Command{
 	Use:   "sensupluginsslack",
 	//Short: fmt.Sprintf("A slack handler for Sensu - (%s)", version.AppVersion()),
-	Long:  `Generate meaningful slack attachments from Senu events`,
+	Long:  `Generate meaningful slack attachments from Sensu events`,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -90,7 +90,7 @@ func init() {
 		sensuutil.Exit("GENERALGOLANGERROR")
 	}
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /etc/sensuplugins/conf.d/.sensupluginschrony.yaml)")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /etc/sensuplugins/conf.d/.sensupluginsslack.yaml)")
 	RootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "print debugging info")
 	RootCmd.PersistentFlags().StringVarP(&slackToken, "token", "", "", "the slack api token")
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
